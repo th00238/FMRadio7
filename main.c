@@ -17,8 +17,7 @@
 #pragma config STVREN = OFF		// Stack full/underflow will not cause Reset
 #pragma config CP = OFF			// Program memory block not code-protected 
 
-#include <xc.h>
-#include "i2c.h"
+#include <i2c.h>
 #include "taki.h"
 
 void main(void) 
