@@ -1,6 +1,6 @@
 /*
  * File:   main.c
- * Author: matthew
+ * Author: Matthew Mould
  *
  * Created on 14 February 2017, 12:16
  */
@@ -43,10 +43,11 @@ void initialise()
 	LCDPS  = 0b00110110;         	// 37 Hz frame frequency
     
 	ADCON1 = 0b00111111;        	// Make all ADC/IO pins digital
-	TRISA = 0b00000011;             // RA0 and RA1 pbutton
-	TRISB = 0b00100001;				// RB0 and RB5 pbutton
+	TRISA = 0b00000011;             // RA0 and RA1 buttons 0 1
+    TRISB = 0b00000000;
 	TRISC = 0b00011000;				// RC3 and RC4 do the I2C bus
-	TRISG = 0b11111111;				// RG0, RG1 & RG3 pbutton
+    TRISE = 0b11110000              // buttons 2 3 4 5
+	TRISG = 0b11111111;				// RG0, RG1 & RG2 switches and 6 7 buttons
 	PORTA = 0;
 	PORTB = 0;
 	PORTC = 0;
