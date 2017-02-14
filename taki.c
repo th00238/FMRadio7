@@ -9,13 +9,20 @@
 
 
 void set_lcd(int khz){
-    
+    //if khz is zero, clear screen 
 }
 int check_button(int button){
-    int b0, b1, b2, b3, b4, b5, b6, b7;
+    int b0=0, b1=0, b2=0, b3=0, b4=0, b5=0, b6=0, b7=0; //8 buttons
+    
+    
+    
 }
 
 int check_switch(int switchn){
-    int s0, s1, s2;
+    int s0=0, s1=0, s2=0;       // 3 switches excluding the top one 
+    
+    
+    
+    
     
 }
