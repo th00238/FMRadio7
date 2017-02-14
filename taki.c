@@ -6,6 +6,16 @@
  */
 
 
-#include <xc.h>
 
 
+void set_lcd(int khz){
+    
+}
+int check_button(int button){
+    int b0, b1, b2, b3, b4, b5, b6, b7;
+}
+
+int check_switch(int switchn){
+    int s0, s1, s2;
+    
+}
