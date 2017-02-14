@@ -10,36 +10,8 @@
 #ifndef XC_TAKI_H
 #define	XC_TAKI_H
 
-
-// TODO Insert appropriate #include <>
-
-// TODO Insert C++ class definitions if appropriate
-
-// TODO Insert declarations
-
-// Comment a function and leverage automatic documentation with slash star star
-/**
-    <p><b>Function prototype:</b></p>
-  
-    <p><b>Summary:</b></p>
-
-    <p><b>Description:</b></p>
-
-    <p><b>Precondition:</b></p>
-
-    <p><b>Parameters:</b></p>
-
-    <p><b>Returns:</b></p>
-
-    <p><b>Example:</b></p>
-    <code>
- 
-    </code>
-
-    <p><b>Remarks:</b></p>
- */
-// TODO Insert declarations or function prototypes (right here) to leverage 
-// live documentation
+// Switches 0 1 2 are RG0 RG1 RG2
+// Buttons 0 1 2 3 4 5 6 7 are RA0 RA1 RE4 RE5 RE6 RE7 RG3 RG4
 
 void set_lcd(int khz);
 int check_button(int button);
