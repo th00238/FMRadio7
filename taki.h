@@ -10,7 +10,6 @@
 #ifndef XC_TAKI_H
 #define	XC_TAKI_H
 
-#include <xc.h> // include processor files - each processor file is guarded.  
 
 // TODO Insert appropriate #include <>
 
