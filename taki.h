@@ -2,7 +2,7 @@
  * File:taki.h
  * Author: Matthew Mould and Takahiko Hasegawa
  * Comments:
- * Revision history: yes 
+ * Revision history: 0.1
  */
 
 // This is a guard condition so that contents of this file are not included
