@@ -235,5 +235,11 @@ unsigned char FMready(unsigned int *rdy) {
 // Reads frequency from receiver and sends it to lcd
 void show_freq()
 {
+    unsigned int channel = FMLOWCHAN;
     
+    FMread(FMASKRDCHAN, &channel);
+    channel += 690;
+    set_lcd(channel);
+    
+    return;
 }
