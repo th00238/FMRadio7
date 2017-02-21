@@ -322,6 +322,12 @@ void set_stereo(unsigned int value)
 // Increases volume if inc is 1, else decreases
 void set_volume(unsigned int inc)
 {
+    unsigned int volume = 0;
     // Read volume
+    FMread(FMCHIPVOLADR, &volume);
+    volume &= 0b0000011110000000;
+    volume >>= 7;
+    
+    // Set and write volume
     
 }
