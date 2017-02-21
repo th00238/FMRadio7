@@ -22,7 +22,7 @@ extern "C" {
 #define FMCHIPVERSADR	0x1C		// Address of FM chip version
 #define FMCHIPIDADR		0x1B		// Address of FM chip ID  
 #define FMCHIPSTSADR	0x13		// Address of FM chip status
-#define FMCHIPVOLADR    0x0E
+#define FMCHIPVOLADR    0x03
 
 #define FMHIGHCHAN		(1080-690)	// Highest FM channel number
 #define FMLOWCHAN		(875-690)
