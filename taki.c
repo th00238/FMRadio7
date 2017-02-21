@@ -9,7 +9,23 @@
 
 
 void set_lcd(int khz){
+    
     //if khz is zero, clear screen 
+    
+    int NumberIntoMhz, WriteLCD;
+    int one, ten, thou, tenth; // gets 1000 then outputs 100,0 
+    
+    NumberIntoMhz = khz/100; 
+    if (NumberIntoMhz > 10 && NumberIntoMhz < 100)// channel = 1000
+    {
+        WriteLCD = ',0';
+    }
+      
+    one = 001;
+    ten = 010;
+    thou = 100,0;
+    tenthou = 100,00;
+   
 }
 int check_button(int button){
     int ReadPortA,ReadPortE,ReadPortG, Mask, ButtonNumber;      //8 buttons RA0 RA1 RE4 RE5 RE6 RE7 RG3 RG4
