@@ -252,8 +252,7 @@ void show_freq()
     unsigned int channel = FMLOWCHAN;
     
     FMread(FMASKRDCHAN, &channel);
-    channel += 69;
-    channel &= 0b0000000111111111; // Remove other registers
+    channel += 690;
     set_lcd(channel);
     
     return;
@@ -269,7 +268,7 @@ void check_switches()
     
     if (switches[MUTE_SWITCH] != switchState[MUTE_SWITCH])
     {
-        // TODO: Toggle mute
+        set_mute(switches[MUTE_SWITCH]);
     }
     if (switches[STEREO_SWITCH] != switchState[STEREO_SWITCH])
     {
@@ -279,6 +278,8 @@ void check_switches()
     {
         // TODO: Toggle seek/tune
     }
+    
+    switchState = switches;
 }
 
 int check_buttons()
@@ -299,7 +300,7 @@ void set_mute(int value)
     if (value == 1)
         regImg[1] |= 0b0000000000000010; // Set hmute
     else
-        regImg[1] ^= 0b0000000000000010; // Unset hmute
+        regImg[1] &= 0b1111111111111101; // Unset hmute
     
     FMwrite(1);
 }
