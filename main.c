@@ -254,8 +254,9 @@ void show_freq()
 {
     unsigned int channel = FMLOWCHAN;
     
-    FMread(FMASKRDCHAN, &channel);
-    channel += 690;
+    FMread(FMCHIPSTSADR, &channel);
+    channel >>= 7;
+    channel += 69;
     set_lcd(channel);
     
     return;
@@ -316,4 +317,11 @@ void set_stereo(unsigned int value)
         regImg[1] &= 0b1111111111110111; // Unset Mono
     
     FMwrite(1);
+}
+
+// Increases volume if inc is 1, else decreases
+void set_volume(unsigned int inc)
+{
+    // Read volume
+    
 }
