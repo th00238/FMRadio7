@@ -20,6 +20,7 @@
 #include <i2c.h>
 #include "taki.h"
 #include "fm.h"
+#include "switches_buttons.h"
 
 // FM register bank defaults -
 const unsigned int regDflt[18] = {
@@ -44,6 +45,7 @@ const unsigned int regDflt[18] = {
 };
 
 unsigned int regImg[18];	// FM register bank images
+unsigned char switchState[3] = {2, 2, 2}; //Previous state of switches
 
 void initialise();
 unsigned char FMread(unsigned char regAddr, unsigned int *data);
@@ -54,10 +56,13 @@ unsigned char FMinit();
 unsigned char FMwrite(unsigned char adr);
 unsigned char FMready(unsigned int *rdy);
 void show_freq();
+void check_switches();
+int check_buttons();
 
 void main(void) 
 {
     unsigned int fm_version;
+    int button_pressed;
     
     initialise();
     
@@ -65,7 +70,15 @@ void main(void)
     if (fm_version != 0x1010)
         fm_error();     // Invalid FM receiver
     
+    if (FMinit() != exit_success)
+        fm_error();
     
+    while(1)
+    {
+        check_switches();
+        button_pressed = check_buttons(); // -1 if no button
+        // Perform action
+    }
     
     return;
 }
@@ -242,4 +255,38 @@ void show_freq()
     set_lcd(channel);
     
     return;
+}
+
+void check_switches()
+{
+    unsigned char switches[3];
+    int i;
+    
+    for (i = 0; i < 3; i++)
+        switches = check_switch(i);
+    
+    if (switches[MUTE_SWITCH] != switchState[MUTE_SWITCH])
+    {
+        // TODO: Toggle mute
+    }
+    if (switches[STEREO_SWITCH] != switchState[STEREO_SWITCH])
+    {
+        // TODO: Toggle stereo
+    }
+    if (switches[TUNE_SEEK_SWITCH] != switchState[TUNE_SEEK_SWITCH])
+    {
+        // TODO: Toggle seek/tune
+    }
+}
+
+int check_buttons()
+{
+    int i;
+    
+    for (i = 0; i < 8; i++)
+    {
+        if (check_button(i))
+            return i;
+    }
+    return -1;
 }
