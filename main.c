@@ -77,7 +77,8 @@ void main(void)
     {
         check_switches();
         button_pressed = check_buttons(); // -1 if no button
-        // Perform action
+        if (button_pressed != -1)
+            set_lcd(button_pressed);
     }
     
     return;
