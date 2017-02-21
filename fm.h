@@ -22,7 +22,13 @@ extern "C" {
 #define FMCHIPVERSADR	0x1C		// Address of FM chip version
 #define FMCHIPIDADR		0x1B		// Address of FM chip ID  
 #define FMCHIPSTSADR	0x13		// Address of FM chip status
-#define FMCHIPVOLADR    0x03
+#define FMCHIPVOLADR    0x03        // Volume
+    
+#define FMASKMUTE		0x0001		// Register 1, bit 1
+#define FMASKTUNE		0x0200		// Register 2, bit 9
+#define FMASKSTATUS		0x0020		// Register 0x13, bit 5
+#define FMASKSEEK		0x4000		// Register 3, bit 14
+#define FMASKRDCHAN		0xFF80		// Register 2, channel number bits
 
 #define FMHIGHCHAN		(1080-690)	// Highest FM channel number
 #define FMLOWCHAN		(875-690)
