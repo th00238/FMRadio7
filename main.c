@@ -252,7 +252,8 @@ void show_freq()
     unsigned int channel = FMLOWCHAN;
     
     FMread(FMASKRDCHAN, &channel);
-    channel += 690;
+    channel += 69;
+    channel &= 0b0000000111111111; // Remove other registers
     set_lcd(channel);
     
     return;
@@ -290,4 +291,15 @@ int check_buttons()
             return i;
     }
     return -1;
+}
+
+// Mutes if value is 1, else 0.
+void set_mute(int value)
+{
+    if (value == 1)
+        regImg[1] |= 0b0000000000000010; // Set hmute
+    else
+        regImg[1] ^= 0b0000000000000010; // Unset hmute
+    
+    FMwrite(1);
 }
