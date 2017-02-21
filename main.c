@@ -46,6 +46,7 @@ const unsigned int regDflt[18] = {
 
 unsigned int regImg[18];	// FM register bank images
 unsigned char switchState[3] = {2, 2, 2}; //Previous state of switches
+unsigned int seek = 0; // Weather to seek of tune
 
 void initialise();
 unsigned char FMread(unsigned char regAddr, unsigned int *data);
@@ -58,6 +59,8 @@ unsigned char FMready(unsigned int *rdy);
 void show_freq();
 void check_switches();
 int check_buttons();
+void set_stereo(unsigned int value);
+void set_mute(unsigned int value);
 
 void main(void) 
 {
@@ -276,7 +279,7 @@ void check_switches()
     }
     if (switches[TUNE_SEEK_SWITCH] != switchState[TUNE_SEEK_SWITCH])
     {
-        // TODO: Toggle seek/tune
+        seek = switches[TUNE_SEEK_SWITCH];
     }
     
     switchState = switches;
@@ -295,12 +298,22 @@ int check_buttons()
 }
 
 // Mutes if value is 1, else 0.
-void set_mute(int value)
+void set_mute(unsigned int value)
 {
     if (value == 1)
         regImg[1] |= 0b0000000000000010; // Set hmute
     else
         regImg[1] &= 0b1111111111111101; // Unset hmute
+    
+    FMwrite(1);
+}
+
+void set_stereo(unsigned int value)
+{
+    if (value == 0)
+        regImg[1] |= 0b0000000000001000; // Set Mono
+    else
+        regImg[1] &= 0b1111111111110111; // Unset Mono
     
     FMwrite(1);
 }
