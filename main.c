@@ -19,20 +19,74 @@
 
 #include <i2c.h>
 #include "taki.h"
+#include "fm.h"
+
+// FM register bank defaults -
+const unsigned int regDflt[18] = {
+	0xFFFF,     // R0 -- the first writable register .  (disable xo_en)   
+	0x5B15,     // R1.   
+	0xD0B9,     // R2.   
+	0xA010,     // R3   seekTHD = 16   
+	0x0780,     // R4   
+	0x28AB,     // R5   
+	0x6400,     // R6   
+	0x1EE7,     // R7   
+	0x7141,     // R8   
+	0x007D,     // R9   
+	0x82C6,     // R10  disable wrap   
+	0x4F55,     // R11. <--- (disable xo_output)   
+	0x970C,     // R12.   
+	0xB845,     // R13   
+	0xFC2D,     // R14   
+	0x8097,     // R15   
+	0x04A1,     // R16   
+	0xDF6A      // R17
+};
+
+unsigned int regImg[18];	// FM register bank images
+
+void initialise();
+unsigned char FMread(unsigned char regAddr, unsigned int *data);
+unsigned char FMvers(unsigned int *vsn);
+void fm_error();
+void dly(int d);
+unsigned char FMinit();
+unsigned char FMwrite(unsigned char adr);
+unsigned char FMready(unsigned int *rdy);
+void show_freq();
 
 void main(void) 
 {
+    unsigned int fm_version;
+    
     initialise();
+    
+    FMvers(&fm_version);
+    if (fm_version != 0x1010)
+        fm_error();     // Invalid FM receiver
+    
+    
     
     return;
 }
 
+void fm_error()
+{
+    // TODO: add lcd error message
+    while(1)
+        continue;
+}
+
+void dly(int d) {
+
+	int i = 0;
+
+	for ( ; d; --d) 
+		for (i = 100;  i;  --i) ;
+}
+
 void initialise()
 {
-    void Init() {
-
-	int i;
-
 	OSCCON = 0b01110010;        	// Select 8 MHz internal oscillator
     
 	LCDSE0 = 0b11111111;        	// Enable  LCD segments 07-00
@@ -61,4 +115,125 @@ void initialise()
 	OpenI2C( MASTER, SLEW_OFF);
 	SSPADD = 0x3F;
 }
+
+unsigned char FMread(unsigned char regAddr, unsigned int *data) {
+
+	unsigned char firstByte;
+	unsigned char secondByte;
+
+	StartI2C();					// Begin I2C communication
+	IdleI2C();					// Allow the bus to settle
+
+	// Send address of the chip onto the bus
+	if (WriteI2C(FMI2CADR) == exit_failure)
+        return exit_failure;
+    
+	IdleI2C();
+	WriteI2C(regAddr);			// Address the internal register
+	IdleI2C();
+	RestartI2C();				// Initiate a RESTART command
+	IdleI2C();
+	WriteI2C(FMI2CADR + DEVRD);	// Ask for read from FM chip
+	IdleI2C();
+	firstByte = ReadI2C(); 		// Returns the MSB byte
+	IdleI2C();
+	AckI2C();					// Send back Acknowledge
+	IdleI2C();
+	secondByte = ReadI2C();		// Returns the LSB
+	IdleI2C();
+	NotAckI2C();
+	IdleI2C();
+	StopI2C();
+	IdleI2C();
+	*data = firstByte;
+	*data <<= 8;
+	*data = *data | secondByte;
+
+	return exit_success;
+}
+
+// Gets FM chip version and copies it to vsn
+unsigned char FMvers(unsigned int *vsn) {
+	if (FMread(FMCHIPVERSADR, vsn) != exit_success)
+        return exit_failure;
+	return exit_success;
+}
+
+unsigned char FMinit() {
+
+	unsigned char ad;
+	unsigned int dat;
+
+	// Copy default FM register values to the image set -
+	for(ad = 0; ad < 18; ad++) regImg[ad] = regDflt[ad];
+
+	dat = regImg[0];
+	regImg[0] &= ~1;
+    
+	if (FMwrite(0) != exit_success)
+        return exit_failure;
+    
+	for(ad = 0; ad < 18; ad++)
+		if (FMwrite(ad) != exit_success)
+            return exit_failure;
+
+	regImg[0] = dat | 1;
+    
+	if (FMwrite(0) != exit_success)
+        return exit_failure;
+    
+	dly(20);
+    
+	while (FMready(&dat), !dat) // While fm radio is busy
+        dly(2);
+    
+	show_freq();
+	return exit_success;
+}
+
+unsigned char FMwrite(unsigned char adr) {
+
+	unsigned char firstByt;
+	unsigned char secndByt;
+
+	firstByt = regImg[adr] >> 8;
+	secndByt = regImg[adr];
+
+	StartI2C();					// Begin I2C communication
+	IdleI2C();
+
+	// Send slave address of the chip onto the bus
+	if (WriteI2C(FMI2CADR))
+        return exit_failure;
+	IdleI2C();
+	WriteI2C(adr);				// Address the internal register
+	IdleI2C();
+	WriteI2C(firstByt);			// Ask for write to FM chip
+	IdleI2C();
+	WriteI2C(secndByt);
+	IdleI2C();
+	StopI2C();
+	IdleI2C();
+    
+	return exit_success;
+}
+
+// Checks if radio is busy or ready
+unsigned char FMready(unsigned int *rdy) {
+
+	unsigned int sts;
+
+	if (FMread(FMCHIPSTSADR, &sts) != exit_success)
+        return exit_failure;
+    
+	sts &= FMASKSTATUS;
+	*rdy = sts ? TRUE : FALSE;
+    
+	return exit_success;
+}
+
+// Reads frequency from receiver and sends it to lcd
+void show_freq()
+{
+    
 }
