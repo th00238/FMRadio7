@@ -1,6 +1,6 @@
 /*
  * File:   main.c
- * Author: Matthew Mould
+ * Author: Matthew Mould, Takahiko Hasegawa
  *
  * Created on 14 February 2017, 12:16
  */
