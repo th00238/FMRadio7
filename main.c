@@ -329,5 +329,15 @@ void set_volume(unsigned int inc)
     volume >>= 7;
     
     // Set and write volume
+    if (inc)
+        volume++;
+    else
+        volume--;
     
+    volume <<= 7;
+    volume ~= 0xFFFF;
+    regImg[3] &= volume;
+    
+    FMwrite(3);
+    return;
 }
