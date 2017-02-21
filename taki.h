@@ -13,7 +13,7 @@
 // Switches 0 1 2 are RG0 RG1 RG2
 // Buttons 0 1 2 3 4 5 6 7 are RA0 RA1 RE4 RE5 RE6 RE7 RG3 RG4
 
-void set_lcd(int khz);
+void set_lcd(int khz); //in 100 khz
 int check_button(int button);
 int check_switch(int switchn);
 
