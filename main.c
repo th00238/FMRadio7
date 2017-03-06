@@ -323,6 +323,8 @@ void set_stereo(unsigned int value)
 void set_volume(unsigned int inc)
 {
     unsigned int volume = 0;
+    int i;
+    
     // Read volume
     FMread(FMCHIPVOLADR, &volume);
     volume &= 0b0000011110000000;
@@ -334,9 +336,15 @@ void set_volume(unsigned int inc)
     else
         volume--;
     
-    volume <<= 7;
-    volume ~= 0xFFFF;
-    regImg[3] &= volume;
+    // Set volume bits
+    for (i = 0; i < 4; i++)
+    {
+        // Test bit value
+        if ((volume >> i) & 1) // If bit i in volume is 1
+            regImg[3] |= 1 << (i + 7);
+        else
+            regImg[3] &= ~(1 << (i + 7));
+    }
     
     FMwrite(3);
     return;
