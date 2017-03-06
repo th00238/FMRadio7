@@ -61,6 +61,7 @@ void check_switches();
 int check_buttons();
 void set_stereo(unsigned int value);
 void set_mute(unsigned int value);
+void set_volume(unsigned int inc);
 
 void main(void) 
 {
@@ -81,7 +82,39 @@ void main(void)
         check_switches();
         button_pressed = check_buttons(); // -1 if no button
         if (button_pressed != -1)
-            set_lcd(button_pressed);
+        {
+            set_lcd(button_pressed); // DEBUG
+            
+            switch (button_pressed)
+            {
+                case VOLUP_BUTTON:
+                    set_volume(1);
+                    break;
+                case VOLDOWN_BUTTON:
+                    set_volume(0);
+                    break;
+                case TUNEUP_BUTTON:
+                    // TODO
+                    break;
+                case TUNEDOWN_BUTTON:
+                    // TODO
+                    break;
+                case PRES1_BUTTON:
+                    // TODO
+                    break;
+                case PRES2_BUTTON:
+                    // TODO
+                    break;
+                case PRES3_BUTTON:
+                    // TODO
+                    break;
+                case PRES4_BUTTON:
+                    // TODO
+                    break;
+                default:
+                    break;
+            }
+        }
     }
     
     return;
