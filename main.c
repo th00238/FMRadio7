@@ -62,6 +62,7 @@ int check_buttons();
 void set_stereo(unsigned int value);
 void set_mute(unsigned int value);
 void set_volume(unsigned int inc);
+void tune(int dir);
 
 void main(void) 
 {
@@ -94,10 +95,10 @@ void main(void)
                     set_volume(0);
                     break;
                 case TUNEUP_BUTTON:
-                    // TODO
+                    tune(1);
                     break;
                 case TUNEDOWN_BUTTON:
-                    // TODO
+                    tune(0);
                     break;
                 case PRES1_BUTTON:
                     // TODO
@@ -380,5 +381,50 @@ void set_volume(unsigned int inc)
     }
     
     FMwrite(3);
+    return;
+}
+
+// Increases freq by 200khz. Increases if dir is 1.
+void tune(int dir)
+{
+    unsigned int channel = FMLOWCHAN;
+    unsigned int stc = 0;
+    
+    // Get current channel;
+    FMread(FMCHIPSTSADR, &channel);
+    channel >>= 7;
+    
+    // Set channel
+    if (dir)
+        channel += 2;
+    else
+        channel -= 2;
+    
+    set_mute(1);
+    
+    regImg[2] &= 0b1111110111111111; // Clear tune bit
+    FMwrite(2);
+    
+    regImg[3] &= 0b1011111111111111; // Clear seek bit
+    FMwrite(3);
+    
+    regImg[2] = channel; // Set channel
+    FMwrite(2);
+    
+    regImg[2] |= 0b0000001000000000; // Set tune bit
+    FMwrite(2);
+    
+    do
+    {
+        dly(20);
+        FMread(FMCHIPSTSADR, &stc);
+        stc >>= 5;
+        stc &= 1; // Isolate stc bit
+    } while (!stc);
+    
+    if (switchState[MUTE_SWITCH] == 0)
+        set_mute(0); // Unmute
+    
+    // TODO: set LCD
     return;
 }
