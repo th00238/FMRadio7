@@ -276,7 +276,7 @@ void check_switches()
     }
     if (switches[STEREO_SWITCH] != switchState[STEREO_SWITCH])
     {
-        // TODO: Toggle stereo
+        set_stereo(switches[STEREO_SWITCH]);
     }
     if (switches[TUNE_SEEK_SWITCH] != switchState[TUNE_SEEK_SWITCH])
     {
