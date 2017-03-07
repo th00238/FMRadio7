@@ -216,7 +216,7 @@ int check_button(int button){
     ReadPortG = PORTG;
     
     
-    switch (ButtonNumber){
+    switch (button){
         
             case 0: 
                 Mask = 0b00000001; //PORTA
@@ -264,7 +264,7 @@ int check_switch(int switchn){
     int Read, Mask, Store = 0;       // 3 switches excluding the top one 
     
     Read = PORTG;  //Reading PortG
-    switch (Store)
+    switch (switchn)
     {
         case 0:
             Mask = 0b00000001;            //Mask off with the value
