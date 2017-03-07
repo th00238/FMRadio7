@@ -130,7 +130,7 @@ void main(void)
 
 void fm_error()
 {
-    // TODO: add lcd error message
+    set_lcd(9999);
     while(1)
         continue;
 }
