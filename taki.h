@@ -21,17 +21,14 @@
 // Button 2&3 = Channel 
 // Button 4&5, 6, 7 = Storage button 
 
-void set_lcd(int khz); //in 100 khz
-void ChangeSegment(char segNumber, int LCDSegment);
-int check_button(int button);
-int check_switch(int switchn);
-
 #ifdef	__cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-    // TODO If C++ is being used, regular C code needs function names to have C 
-    // linkage so the functions can be used by the c code. 
+void set_lcd(int khz); //in 100 khz
+void ChangeSegment(char segNumber, int LCDSegment);
+int check_button(int button);
+int check_switch(int switchn);
 
 #ifdef	__cplusplus
 }
