@@ -151,7 +151,7 @@ void initialise()
 	TRISA = 0b00000011;             // RA0 and RA1 buttons 0 1
     TRISB = 0b00000000;
 	TRISC = 0b00011000;				// RC3 and RC4 do the I2C bus
-    TRISE = 0b11110000              // buttons 2 3 4 5
+    TRISE = 0b11110000;              // buttons 2 3 4 5
 	TRISG = 0b11111111;				// RG0, RG1 & RG2 switches and 6 7 buttons
 	PORTA = 0;
 	PORTB = 0;
