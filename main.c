@@ -25,16 +25,16 @@
 // FM register bank defaults -
 const unsigned int regDflt[18] = {
 	0xFFFF,     // R0 -- the first writable register .  (disable xo_en)   
-	0x5B15,     // R1.   
-	0xD0B9,     // R2.   
-	0xA010,     // R3   seekTHD = 16   
-	0x0780,     // R4   
-	0x28AB,     // R5   
-	0x6400,     // R6   
-	0x1EE7,     // R7   
-	0x7141,     // R8   
-	0x007D,     // R9   
-	0x82C6,     // R10  disable wrap   
+	0x0000,     // R1.   
+	0x00B9,     // R2.   
+	0x8410,     // R3   seekTHD = 16   
+	0x0000,     // R4   
+	0x0000,     // R5   
+	0x0000,     // R6   
+	0x0000,     // R7   
+	0x0000,     // R8   
+	0x0000,     // R9   
+	0x0008,     // R10  enable wrap   
 	0x4F55,     // R11. <--- (disable xo_output)   
 	0x970C,     // R12.   
 	0xB845,     // R13   
@@ -46,7 +46,7 @@ const unsigned int regDflt[18] = {
 
 unsigned int regImg[18];	// FM register bank images
 unsigned char switchState[3] = {2, 2, 2}; //Previous state of switches
-unsigned int seek = 0; // Weather to seek of tune
+unsigned int seek = 1; // Weather to seek of tune
 
 void initialise();
 unsigned char FMread(unsigned char regAddr, unsigned int *data);
@@ -62,7 +62,8 @@ int check_buttons();
 void set_stereo(unsigned int value);
 void set_mute(unsigned int value);
 void set_volume(unsigned int inc);
-void tune(int dir);
+void tune(char dir);
+void seek(char dir);
 
 void main(void) 
 {
@@ -95,10 +96,16 @@ void main(void)
                     set_volume(0);
                     break;
                 case TUNEUP_BUTTON:
-                    tune(1);
+                    if (seek)
+                        seek(1);
+                    else
+                        tune(1);
                     break;
                 case TUNEDOWN_BUTTON:
-                    tune(0);
+                    if (seek)
+                        seek(0);
+                    else
+                        tune(0);
                     break;
                 case PRES1_BUTTON:
                     // TODO
@@ -290,7 +297,7 @@ void show_freq()
     
     FMread(FMCHIPSTSADR, &channel);
     channel >>= 7;
-    channel += 69;
+    channel += 690;
     set_lcd(channel);
     
     return;
@@ -385,7 +392,7 @@ void set_volume(unsigned int inc)
 }
 
 // Increases freq by 200khz. Increases if dir is 1.
-void tune(int dir)
+void tune(char dir)
 {
     unsigned int channel = FMLOWCHAN;
     unsigned int stc = 0;
@@ -413,6 +420,50 @@ void tune(int dir)
     
     regImg[2] |= 0b0000001000000000; // Set tune bit
     FMwrite(2);
+    
+    do
+    {
+        dly(20);
+        FMread(FMCHIPSTSADR, &stc);
+        stc >>= 5;
+        stc &= 1; // Isolate stc bit
+    } while (!stc);
+    
+    if (switchState[MUTE_SWITCH] == 0)
+        set_mute(0); // Unmute
+    
+    // TODO: set LCD
+    return;
+}
+
+void seek(char dir)
+{
+    unsigned int channel = FMLOWCHAN;
+    unsigned int stc = 0;
+    
+    // Get current channel;
+    FMread(FMCHIPSTSADR, &channel);
+    channel >>= 7;
+    
+    set_mute(1);
+    
+    regImg[2] &= 0b1111110111111111; // Clear tune bit
+    FMwrite(2);
+    
+    regImg[2] = channel; // Set channel
+    FMwrite(2);
+    
+    regImg[3] &= 0b1011111111111111; // Clear seek bit
+    FMwrite(3);
+    
+    if (dir)
+        regImg[3] |= 0b1000000000000000; // Set SEEKUP
+    else
+        regImg[3] &= 0b0111111111111111; // Clear SEEKUP
+    FMwrite(3);
+    
+    regImg[3] |= 0b0100000000000000; // Set seek bit
+    FMwrite(3);
     
     do
     {
