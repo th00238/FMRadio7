@@ -231,7 +231,7 @@ unsigned char FMinit() {
 	if (FMwrite(0) != exit_success)
         return exit_failure;
     
-	for(ad = 0; ad < 18; ad++)
+	for(ad = 1; ad < 18; ad++)
 		if (FMwrite(ad) != exit_success)
             return exit_failure;
 
