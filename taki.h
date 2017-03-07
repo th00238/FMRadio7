@@ -22,9 +22,7 @@
 // Button 4&5, 6, 7 = Storage button 
 
 void set_lcd(int khz); //in 100 khz
-void Segment0(char segNumber);
-void Segment1(char segNumber);
-void Segment2(char segNumber);
+void ChangeSegment(char segNumber, int LCDSegment);
 int check_button(int button);
 int check_switch(int switchn);
 
