@@ -433,7 +433,7 @@ void tune(char dir)
     if (switchState[MUTE_SWITCH] == 0)
         set_mute(0); // Unmute
     
-    // TODO: set LCD
+    // set_lcd(channel + 690);
     return;
 }
 
@@ -469,6 +469,7 @@ void seekChan(char dir)
     do
     {
         dly(20);
+        // set_lcd(channel + 690);
         FMread(FMCHIPSTSADR, &stc);
         stc >>= 5;
         stc &= 1; // Isolate stc bit
@@ -477,6 +478,6 @@ void seekChan(char dir)
     if (switchState[MUTE_SWITCH] == 0)
         set_mute(0); // Unmute
     
-    // TODO: set LCD
+    // set_lcd(channel + 690);
     return;
 }
