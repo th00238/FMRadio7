@@ -35,8 +35,8 @@ const unsigned int regDflt[18] = {
 	0x0000,     // R8   
 	0x0000,     // R9   
 	0x0008,     // R10  enable wrap   
-	0x4F55,     // R11. <--- (disable xo_output)   
-	0x970C,     // R12.   
+	0x0000,     // R11.  
+	0x0000,     // R12.   
 	0xB845,     // R13   
 	0xFC2D,     // R14   
 	0x8097,     // R15   
