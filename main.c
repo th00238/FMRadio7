@@ -469,8 +469,8 @@ void seekChan(char dir)
     do
     {
         dly(20);
-        // set_lcd(channel + 690);
         FMread(FMCHIPSTSADR, &stc);
+        // set_lcd((stc >> 7) + 690);
         stc >>= 5;
         stc &= 1; // Isolate stc bit
     } while (!stc);
