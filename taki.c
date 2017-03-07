@@ -228,27 +228,27 @@ int check_button(int button){
                 ButtonNumber = Mask & ReadPortA;   //And it to isolate 
                 break;
             case 2:
-                Mask = 0b00000100; //PORTE
-                ButtonNumber = Mask & ReadPortE;   //And it to isolate 
-                break;
-            case 3:
-                Mask = 0b00001000; //PORTE
-                ButtonNumber = Mask & ReadPortE;   //And it to isolate 
-                break;
-            case 4:
                 Mask = 0b00010000; //PORTE
                 ButtonNumber = Mask & ReadPortE;   //And it to isolate 
                 break;
-            case 5:
+            case 3:
                 Mask = 0b00100000; //PORTE
                 ButtonNumber = Mask & ReadPortE;   //And it to isolate 
                 break;
+            case 4:
+                Mask = 0b01000000; //PORTE
+                ButtonNumber = Mask & ReadPortE;   //And it to isolate 
+                break;
+            case 5:
+                Mask = 0b10000000; //PORTE
+                ButtonNumber = Mask & ReadPortE;   //And it to isolate 
+                break;
             case 6:
-                Mask = 0b01000000; //PORTG
+                Mask = 0b00001000; //PORTG
                 ButtonNumber = Mask & ReadPortG;   //And it to isolate 
                 break;
             case 7:
-                Mask = 0b10000000; //PORTG
+                Mask = 0b00010000; //PORTG
                 ButtonNumber = Mask & ReadPortG;   //And it to isolate 
                 break;
             default: 
