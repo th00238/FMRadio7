@@ -48,22 +48,22 @@ unsigned int regImg[18];	// FM register bank images
 unsigned char switchState[3] = {2, 2, 2}; //Previous state of switches
 unsigned int seek = 1; // Weather to seek of tune
 
-void initialise();
+void initialise(void);
 unsigned char FMread(unsigned char regAddr, unsigned int *data);
 unsigned char FMvers(unsigned int *vsn);
-void fm_error();
+void fm_error(void);
 void dly(int d);
-unsigned char FMinit();
+unsigned char FMinit(void);
 unsigned char FMwrite(unsigned char adr);
 unsigned char FMready(unsigned int *rdy);
-void show_freq();
-void check_switches();
-int check_buttons();
+void show_freq(void);
+void check_switches(void);
+int check_buttons(void);
 void set_stereo(unsigned int value);
 void set_mute(unsigned int value);
 void set_volume(unsigned int inc);
 void tune(char dir);
-void seek(char dir);
+void seekChan(char dir);
 
 void main(void) 
 {
@@ -97,13 +97,13 @@ void main(void)
                     break;
                 case TUNEUP_BUTTON:
                     if (seek)
-                        seek(1);
+                        seekChan(1);
                     else
                         tune(1);
                     break;
                 case TUNEDOWN_BUTTON:
                     if (seek)
-                        seek(0);
+                        seekChan(0);
                     else
                         tune(0);
                     break;
@@ -309,7 +309,7 @@ void check_switches()
     int i;
     
     for (i = 0; i < 3; i++)
-        switches = check_switch(i);
+        switches[i] = check_switch(i);
     
     if (switches[MUTE_SWITCH] != switchState[MUTE_SWITCH])
     {
@@ -324,7 +324,8 @@ void check_switches()
         seek = switches[TUNE_SEEK_SWITCH];
     }
     
-    switchState = switches;
+    for (i = 0; i < 3; i++)
+        switchState[i] = switches[i];
 }
 
 int check_buttons()
@@ -436,7 +437,7 @@ void tune(char dir)
     return;
 }
 
-void seek(char dir)
+void seekChan(char dir)
 {
     unsigned int channel = FMLOWCHAN;
     unsigned int stc = 0;

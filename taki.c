@@ -40,7 +40,7 @@ void ChangeSegment(char segNumber, int LCDSegment)
 void set_lcd(int khz){
     
     int i;
-    for (i=0; i=<3; i++)
+    for (i=0; i<=3; i++)
     {
         if (khz != 0 )
         {
@@ -49,7 +49,7 @@ void set_lcd(int khz){
             khz /= 10;
         }
         else
-            Segment0(0, i);
+            ChangeSegment(0, i);
         
     }
 
