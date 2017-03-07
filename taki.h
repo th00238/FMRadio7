@@ -21,7 +21,10 @@
 // Button 2&3 = Channel 
 // Button 4&5, 6, 7 = Storage button 
 
-void set_lcd(int khz); //in 100 khz
+void set_lcd(int khz, char segNumber, int LCDSegment); //in 100 khz
+void Segment0(char segNumber);
+void Segment1(char segNumber);
+void Segment2(char segNumber);
 int check_button(int button);
 int check_switch(int switchn);
 
