@@ -257,7 +257,7 @@ int check_button(int button){
     }
                   
                 
-    return ButtonNumber; 
+    return !ButtonNumber; 
 }
 
 int check_switch(int switchn){
