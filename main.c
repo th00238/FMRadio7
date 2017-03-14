@@ -157,12 +157,14 @@ void initialise()
 	ADCON1 = 0b00111111;        	// Make all ADC/IO pins digital
 	TRISA = 0b00000011;             // RA0 and RA1 buttons 0 1
     TRISB = 0b00000000;
-	TRISC = 0b00011000;				// RC3 and RC4 do the I2C bus
+	TRISC = 0b11011000;				// RC3 and RC4 do the I2C bus, RC6 RC7 USART
     TRISE = 0b11110000;              // buttons 2 3 4 5
 	TRISG = 0b11111111;				// RG0, RG1 & RG2 switches and 6 7 buttons
 	PORTA = 0;
 	PORTB = 0;
 	PORTC = 0;
+    
+    RCSTA1 = 0b10000000;            // Enable EUSART
     
     INTCONbits.TMR0IF = 0;          // Clear timer flag
 	//T0CON = 0b00000011;				// Prescale by 16
