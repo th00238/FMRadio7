@@ -70,6 +70,8 @@ void main(void)
     unsigned int fm_version;
     int button_pressed;
     
+    dly(20);
+    
     initialise();
     
     FMvers(&fm_version);
@@ -164,8 +166,9 @@ void initialise()
 	PORTB = 0;
 	PORTC = 0;
     
-    TXSTA1 = 0b10100x10;
+    TXSTA1 = 0b10100010;
     RCSTA1 = 0b10010000;            // Enable EUSART
+    SPBRG1 = 12;
     
     INTCONbits.TMR0IF = 0;          // Clear timer flag
 	//T0CON = 0b00000011;				// Prescale by 16
