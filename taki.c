@@ -39,6 +39,8 @@ void ChangeSegment(char segNumber, int LCDSegment)
 }
 void set_lcd(int khz){
     
+    bt_write_char(khz);
+    
     /*int i;
     for (i=0; i<=3; i++)
     {

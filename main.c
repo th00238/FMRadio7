@@ -21,6 +21,7 @@
 #include "taki.h"
 #include "fm.h"
 #include "switches_buttons.h"
+#include "bt.h"
 
 // FM register bank defaults -
 const unsigned int regDflt[18] = {
@@ -72,6 +73,8 @@ void main(void)
     
     dly(20);
     
+    bt_write_string("DEBUG");
+    
     initialise();
     
     FMvers(&fm_version);
@@ -87,7 +90,7 @@ void main(void)
         button_pressed = check_buttons(); // -1 if no button
         if (button_pressed != -1)
         {
-            set_lcd(button_pressed); // DEBUG
+            bt_write_char(button_pressed); // DEBUG
             
             switch (button_pressed)
             {
