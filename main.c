@@ -150,21 +150,22 @@ void initialise()
 	LCDSE0 = 0b11111111;        	// Enable  LCD segments 07-00
 	LCDSE1 = 0b11111111;        	// Enable  LCD segments 15-08
 	LCDSE2 = 0b11111111;        	// Enable  LCD segments 23-16
-	LCDSE3 = 0b00000000;        	// Disable LCD segments 31-24
+	LCDSE3 = 0b11111111;        	// Disable LCD segments 31-24
 	LCDCON = 0b10001000;         	// Enab LC controller. Static mode. INTRC clock
 	LCDPS  = 0b00110110;         	// 37 Hz frame frequency
     
 	ADCON1 = 0b00111111;        	// Make all ADC/IO pins digital
 	TRISA = 0b00000011;             // RA0 and RA1 buttons 0 1
     TRISB = 0b00000000;
-	TRISC = 0b11011000;				// RC3 and RC4 do the I2C bus, RC6 RC7 USART
+	TRISC = 0b11011000;				// RC3 and RC4 do the I2C bus, RC6 RC7 EUART
     TRISE = 0b11110000;              // buttons 2 3 4 5
 	TRISG = 0b11111111;				// RG0, RG1 & RG2 switches and 6 7 buttons
 	PORTA = 0;
 	PORTB = 0;
 	PORTC = 0;
     
-    RCSTA1 = 0b10000000;            // Enable EUSART
+    TXSTA1 = 0b10100x10;
+    RCSTA1 = 0b10010000;            // Enable EUSART
     
     INTCONbits.TMR0IF = 0;          // Clear timer flag
 	//T0CON = 0b00000011;				// Prescale by 16
@@ -174,6 +175,34 @@ void initialise()
     T0CONbits.TMR0ON = 1;           // Start timer
 	OpenI2C( MASTER, SLEW_OFF);
 	SSPADD = 0x3F;
+    
+    //DEBUG
+    LCDDATA0 = 0b11111111;
+    LCDDATA1 = 0b11111111;
+    LCDDATA2 = 0b11111111;
+    LCDDATA3 = 0b11111111;
+    LCDDATA4 = 0b11111111;
+    LCDDATA5 = 0b11111111;
+    LCDDATA6 = 0b11111111;
+    LCDDATA7 = 0b11111111;
+    LCDDATA8 = 0b11111111;
+    LCDDATA9 = 0b11111111;
+    LCDDATA10 = 0b11111111;
+    LCDDATA11 = 0b11111111;
+    LCDDATA12 = 0b11111111;
+    LCDDATA13 = 0b11111111;
+    LCDDATA14 = 0b11111111;
+    LCDDATA15 = 0b11111111;
+    LCDDATA16 = 0b11111111;
+    LCDDATA17 = 0b11111111;
+    LCDDATA18 = 0b11111111;
+    LCDDATA19 = 0b11111111;
+    LCDDATA20 = 0b11111111;
+    LCDDATA21 = 0b11111111;
+    LCDDATA22 = 0b11111111;
+    LCDDATA23 = 0b11111111;
+    
+
 }
 
 unsigned char FMread(unsigned char regAddr, unsigned int *data) {
