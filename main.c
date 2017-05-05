@@ -18,13 +18,14 @@
 #pragma config CP = OFF			// Program memory block not code-protected 
 
 #include <i2c.h>
+#include <stdio.h>
 #include "taki.h"
 #include "fm.h"
 #include "switches_buttons.h"
 #include "bt.h"
 
 // FM register bank defaults -
-const unsigned int regDflt[18] = {
+/*const unsigned int regDflt[18] = {
 	0xFFFF,     // R0 -- the first writable register .  (disable xo_en)   
 	0x0000,     // R1.   
 	0x00B9,     // R2.   
@@ -38,6 +39,26 @@ const unsigned int regDflt[18] = {
 	0x0008,     // R10  enable wrap   
 	0x0000,     // R11.  
 	0x0000,     // R12.   
+	0xB845,     // R13   
+	0xFC2D,     // R14   
+	0x8097,     // R15   
+	0x04A1,     // R16   
+	0xDF6A      // R17
+};*/
+const unsigned int regDflt[18] = {
+	0xFFFF,     // R0 -- the first writable register .  (disable xo_en)   
+	0x5B15,     // R1.   
+	0xD0B9,     // R2.   
+	0xA010,     // R3   seekTHD = 16   
+	0x0780,     // R4   
+	0x28AB,     // R5   
+	0x6400,     // R6   
+	0x1EE7,     // R7   
+	0x7141,     // R8   
+	0x007D,     // R9   
+	0x82C6,     // R10  disable wrap   
+	0x4F55,     // R11. <--- (disable xo_output)   
+	0x970C,     // R12.   
 	0xB845,     // R13   
 	0xFC2D,     // R14   
 	0x8097,     // R15   
@@ -73,9 +94,9 @@ void main(void)
     
     dly(20);
     
-    bt_write_string("DEBUG");
-    
     initialise();
+    
+    bt_write_string("DEBUG\n");
     
     FMvers(&fm_version);
     if (fm_version != 0x1010)
@@ -86,11 +107,12 @@ void main(void)
     
     while(1)
     {
+        
         check_switches();
         button_pressed = check_buttons(); // -1 if no button
         if (button_pressed != -1)
         {
-            bt_write_char(button_pressed); // DEBUG
+            printf("%d\n", button_pressed); // DEBUG
             
             switch (button_pressed)
             {
@@ -135,7 +157,7 @@ void main(void)
 
 void fm_error()
 {
-    set_lcd(9999);
+    bt_write_string("ERROR\n");
     while(1)
         continue;
 }
@@ -155,7 +177,7 @@ void initialise()
 	LCDSE0 = 0b11111111;        	// Enable  LCD segments 07-00
 	LCDSE1 = 0b11111111;        	// Enable  LCD segments 15-08
 	LCDSE2 = 0b11111111;        	// Enable  LCD segments 23-16
-	LCDSE3 = 0b11111111;        	// Disable LCD segments 31-24
+	LCDSE3 = 0b00000000;        	// Disable LCD segments 31-24
 	LCDCON = 0b10001000;         	// Enab LC controller. Static mode. INTRC clock
 	LCDPS  = 0b00110110;         	// 37 Hz frame frequency
     
@@ -169,10 +191,6 @@ void initialise()
 	PORTB = 0;
 	PORTC = 0;
     
-    TXSTA1 = 0b10100010;
-    RCSTA1 = 0b10010000;            // Enable EUSART
-    SPBRG1 = 12;
-    
     INTCONbits.TMR0IF = 0;          // Clear timer flag
 	//T0CON = 0b00000011;				// Prescale by 16
     T0CON = 0b00001000;             // No prescale
@@ -182,31 +200,12 @@ void initialise()
 	OpenI2C( MASTER, SLEW_OFF);
 	SSPADD = 0x3F;
     
+    serial_init();
+    
     //DEBUG
     LCDDATA0 = 0b11111111;
     LCDDATA1 = 0b11111111;
     LCDDATA2 = 0b11111111;
-    LCDDATA3 = 0b11111111;
-    LCDDATA4 = 0b11111111;
-    LCDDATA5 = 0b11111111;
-    LCDDATA6 = 0b11111111;
-    LCDDATA7 = 0b11111111;
-    LCDDATA8 = 0b11111111;
-    LCDDATA9 = 0b11111111;
-    LCDDATA10 = 0b11111111;
-    LCDDATA11 = 0b11111111;
-    LCDDATA12 = 0b11111111;
-    LCDDATA13 = 0b11111111;
-    LCDDATA14 = 0b11111111;
-    LCDDATA15 = 0b11111111;
-    LCDDATA16 = 0b11111111;
-    LCDDATA17 = 0b11111111;
-    LCDDATA18 = 0b11111111;
-    LCDDATA19 = 0b11111111;
-    LCDDATA20 = 0b11111111;
-    LCDDATA21 = 0b11111111;
-    LCDDATA22 = 0b11111111;
-    LCDDATA23 = 0b11111111;
     
 
 }

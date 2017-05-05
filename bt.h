@@ -12,10 +12,11 @@
 extern "C" {
 #endif
 
-
-int bt_tx_ready();
+void serial_init(void);
+int bt_tx_ready(void);
 void bt_write_char(char ch);
 void bt_write_string(char *string);
+void putch(char ch);
 
 #ifdef	__cplusplus
 }

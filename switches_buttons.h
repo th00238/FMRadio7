@@ -19,10 +19,10 @@ extern "C" {
 #define TUNE_SEEK_SWITCH 11
 
 // Buttons
-#define VOLUP_BUTTON 9
-#define VOLDOWN_BUTTON 10
-#define TUNEUP_BUTTON 11
-#define TUNEDOWN_BUTTON 12
+#define VOLUP_BUTTON 4
+#define VOLDOWN_BUTTON 3
+#define TUNEUP_BUTTON 5
+#define TUNEDOWN_BUTTON 2
 #define PRES1_BUTTON 13
 #define PRES2_BUTTON 14
 #define PRES3_BUTTON 15

@@ -5,6 +5,8 @@
  * Created on February 14, 2017, 12:39 PM
  */
 #include <p18cxxx.h>
+#include <stdio.h>
+#include "bt.h"
 
 void Segment0(char segNumber);
 void Segment1(char segNumber);
@@ -39,7 +41,7 @@ void ChangeSegment(char segNumber, int LCDSegment)
 }
 void set_lcd(int khz){
     
-    bt_write_char(khz);
+    printf("%d\n", khz);
     
     /*int i;
     for (i=0; i<=3; i++)
@@ -258,8 +260,10 @@ int check_button(int button){
                 break;
     }
                   
-                
-    return !ButtonNumber; 
+    if (ButtonNumber)
+        return 0;
+    else
+        return 1;
 }
 
 int check_switch(int switchn){
